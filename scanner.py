@@ -1,12 +1,10 @@
 #!/bin/python3
-
 import sys
 import socket
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import os
 
-# Define port ranges for different options
 PORT_RANGES = {
     "well-known": (0, 1023),
     "registered": (1024, 49151),
@@ -60,7 +58,7 @@ elif sys.argv[1] in ("-h", "--help"):
     sys.exit()
 
 target = socket.gethostbyname(sys.argv[1])  # Translate hostname to IPv4
-port_range = PORT_RANGES["full"]  # Default to full range
+port_range = PORT_RANGES["well-known"]  # Default to well-known range
 output_path = None
 
 # Parse arguments and set port range
@@ -72,11 +70,6 @@ elif sys.argv[1] in ("-h", "--help"):
     print_help()
     sys.exit()
 
-target = socket.gethostbyname(sys.argv[1])  # Translate hostname to IPv4
-port_range = PORT_RANGES["well-known"]  # Default to well-known range
-output_path = None
-
-# Check for additional options
 for arg in sys.argv[2:]:
     if arg in ("-wn", "--well-known"):
         port_range = PORT_RANGES["well-known"]
@@ -104,19 +97,16 @@ for arg in sys.argv[2:]:
             sys.exit()
 
 
-# Adding a pretty banner
 print("-" * 50)
 print("Scanning target: " + target)
 print("Time started: " + str(datetime.now()))
 print("Scanning port range: {}-{}".format(port_range[0], port_range[1]))
 print("-" * 50)
 
-# Start the port scan
 with ThreadPoolExecutor(max_workers=100) as executor:  # Adjust max_workers as needed
     for port in range(port_range[0], port_range[1] + 1):
         executor.submit(scan_port, target, port, output_path)
 
-# Handle keyboard interrupt
 try:
     pass
 except KeyboardInterrupt:
