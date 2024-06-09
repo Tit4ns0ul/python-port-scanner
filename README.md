@@ -46,3 +46,7 @@ Save the scan results to a specific file:
 # Disclaimer
 
 Ensure you have the necessary permissions to scan the target system. Unauthorized scanning can be illegal or considered malicious activity.
+
+# License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details.
